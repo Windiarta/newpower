@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import { Language, getTranslation } from '@/lib/i18n'
+import { useState, useEffect, isValidElement, cloneElement } from 'react'
 import { client } from '@/lib/sanity'
 import { Company, Contact } from '@/types'
+import { Language } from '@/lib/i18n'
+import { LocaleContext } from '@/lib/LocaleContext'
+import Header from './Header'
+import Footer from './Footer'
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -15,69 +16,50 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const [locale, setLocale] = useState<Language>('id')
   const [company, setCompany] = useState<Company | null>(null)
   const [contacts, setContacts] = useState<Contact[]>([])
-  const t = getTranslation(locale)
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchGlobalData = async () => {
       try {
-        // Fetch company
-        const companyQuery = `*[_type == "company"][0] {
-          _id,
-          name,
-          nameEn,
-          description,
-          descriptionEn,
-          logo,
-          about,
-          aboutEn,
-          vision,
-          visionEn,
-          mission,
-          missionEn,
-          address,
-          addressEn,
-          phone,
-          email,
-          website,
-          socialMedia,
-          updatedAt
-        }`
-        
-        // Fetch contacts
-        const contactsQuery = `*[_type == "contact"] | order(name asc) {
-          _id,
-          name,
-          nameEn,
-          position,
-          positionEn,
-          email,
-          phone,
-          whatsapp,
-          image
-        }`
-        
         const [companyResult, contactsResult] = await Promise.all([
-          client.fetch(companyQuery),
-          client.fetch(contactsQuery)
+          client.fetch(`*[_type == "company"][0]`),
+          client.fetch(`*[_type == "contact"] | order(name asc)`)
         ])
-        
         setCompany(companyResult)
         setContacts(contactsResult)
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching global data:', error)
       }
     }
-
-    fetchData()
+    fetchGlobalData()
   }, [])
 
+  const handleLocaleChange = (newLocale: Language) => {
+    setLocale(newLocale)
+  }
+
+  // Pass locale as prop to children (HomePage)
+  // Only clone if children is a valid React element and accepts 'locale' prop
+  const childrenWithLocale =
+    isValidElement(children) && 'props' in children && (children.type as any).propTypes?.locale
+      ? cloneElement(children, { locale } as any)
+      : children
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header locale={locale} onLanguageChange={setLocale} t={t} />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer company={company} contacts={contacts} t={t} />
-    </div>
+    <LocaleContext.Provider value={locale}>
+      <div className="min-h-screen flex flex-col">
+        <Header 
+          locale={locale} 
+          onLocaleChange={handleLocaleChange} 
+        />
+        <main className="flex-1">
+          {childrenWithLocale}
+        </main>
+        <Footer 
+          locale={locale}
+          company={company}
+          contacts={contacts}
+        />
+      </div>
+    </LocaleContext.Provider>
   )
 } 
