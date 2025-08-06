@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { client } from '@/lib/sanity'
 import { Product, Company, Contact } from '@/types'
 import { getTranslation } from '@/lib/i18n'
@@ -555,9 +556,11 @@ export default function HomePage() {
                   <div key={contact._id} className="bg-white rounded-lg shadow-sm border p-6">
                     <div className="flex items-start">
                       {contact.image && (
-                        <img
+                        <Image
                           src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/production/${contact.image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png')}`}
                           alt={contact.name}
+                          width={48}
+                          height={48}
                           className="w-12 h-12 rounded-full mr-4 object-cover"
                         />
                       )}

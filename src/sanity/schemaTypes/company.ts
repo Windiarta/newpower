@@ -1,25 +1,93 @@
-export default {
+import { defineField, defineType } from 'sanity'
+
+const company = defineType({
   name: 'company',
   title: 'Company',
   type: 'document',
   fields: [
-    { name: 'name', title: 'Name (ID)', type: 'string' },
-    { name: 'nameEn', title: 'Name (EN)', type: 'string' },
-    { name: 'description', title: 'Description (ID)', type: 'text' },
-    { name: 'descriptionEn', title: 'Description (EN)', type: 'text' },
-    { name: 'logo', title: 'Logo', type: 'image' },
-    { name: 'about', title: 'About (ID)', type: 'text' },
-    { name: 'aboutEn', title: 'About (EN)', type: 'text' },
-    { name: 'vision', title: 'Vision (ID)', type: 'text' },
-    { name: 'visionEn', title: 'Vision (EN)', type: 'text' },
-    { name: 'mission', title: 'Mission (ID)', type: 'text' },
-    { name: 'missionEn', title: 'Mission (EN)', type: 'text' },
-    { name: 'address', title: 'Address (ID)', type: 'text' },
-    { name: 'addressEn', title: 'Address (EN)', type: 'text' },
-    { name: 'phone', title: 'Phone', type: 'string' },
-    { name: 'email', title: 'Email', type: 'string' },
-    { name: 'website', title: 'Website', type: 'url' },
-    {
+    defineField({
+      name: 'name',
+      title: 'Name (ID)',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'nameEn',
+      title: 'Name (EN)',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description (ID)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'descriptionEn',
+      title: 'Description (EN)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'logo',
+      title: 'Logo',
+      type: 'image',
+    }),
+    defineField({
+      name: 'about',
+      title: 'About (ID)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'aboutEn',
+      title: 'About (EN)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'vision',
+      title: 'Vision (ID)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'visionEn',
+      title: 'Vision (EN)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'mission',
+      title: 'Mission (ID)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'missionEn',
+      title: 'Mission (EN)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'address',
+      title: 'Address (ID)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'addressEn',
+      title: 'Address (EN)',
+      type: 'text',
+    }),
+    defineField({
+      name: 'phone',
+      title: 'Phone',
+      type: 'string',
+    }),
+    defineField({
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+    }),
+    defineField({
+      name: 'website',
+      title: 'Website',
+      type: 'url',
+    }),
+    defineField({
       name: 'socialMedia',
       title: 'Social Media',
       type: 'object',
@@ -29,6 +97,14 @@ export default {
         { name: 'twitter', title: 'Twitter', type: 'url' },
         { name: 'linkedin', title: 'LinkedIn', type: 'url' },
       ],
-    },
+    }),
   ],
-}
+  preview: {
+    select: {
+      title: 'name',
+      media: 'logo',
+    },
+  },
+})
+
+export default company
