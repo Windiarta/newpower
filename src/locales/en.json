@@ -11,8 +11,8 @@
     "subtitle": "Discover high-quality products from our company",
     "viewProducts": "View Products",
     "learnMore": "Learn More",
-    "keyFeatures": "Key Features",
-    "keyFeaturesSubtitle": "What makes our catalog special",
+    "keyFeatures": "Motto",
+    "keyFeaturesSubtitle": "Our Motto",
     "productCatalog": "Product Catalog",
     "productCatalogDesc": "Discover various high-quality products with complete information",
     "companyProfile": "Company Profile",
@@ -44,7 +44,10 @@
     "noProductsDesc": "Try adjusting your search or filter criteria",
     "productsFound": "products found",
     "clearFilters": "Clear filters",
-    "applyFilters": "Apply Filters"
+    "applyFilters": "Apply Filters",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {current} of {total}"
   },
   "company": {
     "title": "About Company",

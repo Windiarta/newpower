@@ -8,6 +8,8 @@ import { useLocale } from '@/lib/LocaleContext'
 import ProductCard from '@/components/ProductCard'
 import { ArrowRight, Package, Building, Users, Phone, Mail, MapPin, Globe, Target, Award } from 'lucide-react'
 
+const PRODUCTS_PER_PAGE = 9;
+
 export default function HomePage() {
   const locale = useLocale()
   const [products, setProducts] = useState<Product[]>([])
@@ -18,6 +20,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortBy, setSortBy] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const t = getTranslation(locale)
 
   useEffect(() => {
@@ -42,6 +45,7 @@ export default function HomePage() {
   }, [])
 
   useEffect(() => {
+    setCurrentPage(1)
     filterProducts(searchQuery, selectedCategory, sortBy)
     // eslint-disable-next-line
   }, [products, locale])
@@ -52,12 +56,14 @@ export default function HomePage() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query)
+    setCurrentPage(1)
     filterProducts(query, selectedCategory, sortBy)
   }
 
   const handleFilter = (category: string, sort: string) => {
     setSelectedCategory(category)
     setSortBy(sort)
+    setCurrentPage(1)
     filterProducts(searchQuery, category, sort)
   }
 
@@ -99,6 +105,20 @@ export default function HomePage() {
         })
     }
     setFilteredProducts(filtered)
+  }
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE
+  )
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   const features = [
@@ -298,12 +318,38 @@ export default function HomePage() {
                 </p>
               </div>
               {/* Products Grid */}
-              {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredProducts.map((product) => (
-                    <ProductCard key={product._id} product={product} locale={locale} />
-                  ))}
-                </div>
+              {paginatedProducts.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {paginatedProducts.map((product) => (
+                      <ProductCard key={product._id} product={product} locale={locale} />
+                    ))}
+                  </div>
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-4 mt-8">
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+                      >
+                        {t.products.previous || 'Previous'}
+                      </button>
+                      <span className="text-gray-700">
+                        {t.products.pageOf
+                          ? t.products.pageOf.replace('{current}', String(currentPage)).replace('{total}', String(totalPages))
+                          : `Page ${currentPage} of ${totalPages}`}
+                      </span>
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+                      >
+                        {t.products.next || 'Next'}
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-center py-12">
                   <div className="text-gray-400 mb-4">

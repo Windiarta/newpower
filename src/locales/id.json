@@ -11,8 +11,8 @@
     "subtitle": "Temukan produk berkualitas tinggi dari perusahaan kami",
     "viewProducts": "Lihat Produk",
     "learnMore": "Pelajari Lebih Lanjut",
-    "keyFeatures": "Fitur Utama",
-    "keyFeaturesSubtitle": "Apa yang membuat katalog kami istimewa",
+    "keyFeatures": "Motto",
+    "keyFeaturesSubtitle": "Motto Kami",
     "productCatalog": "Katalog Produk",
     "productCatalogDesc": "Temukan berbagai produk berkualitas tinggi dengan informasi lengkap",
     "companyProfile": "Profil Perusahaan",
@@ -44,7 +44,10 @@
     "noProductsDesc": "Coba sesuaikan pencarian atau kriteria filter Anda",
     "productsFound": "produk ditemukan",
     "clearFilters": "Hapus filter",
-    "applyFilters": "Terapkan Filter"
+    "applyFilters": "Terapkan Filter",
+    "previous": "Sebelumnya",
+    "next": "Berikutnya",
+    "pageOf": "Halaman {current} dari {total}"
   },
   "company": {
     "title": "Tentang Perusahaan",
