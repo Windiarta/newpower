@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, isValidElement, cloneElement } from 'react'
+import { useState, useEffect } from 'react'
 import { client } from '@/lib/sanity'
 import { Company, Contact } from '@/types'
 import { Language } from '@/lib/i18n'
@@ -37,13 +37,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     setLocale(newLocale)
   }
 
-  // Pass locale as prop to children (HomePage)
-  // Only clone if children is a valid React element and accepts 'locale' prop
-  const childrenWithLocale =
-    isValidElement(children) && 'props' in children && (children.type as any).propTypes?.locale
-      ? cloneElement(children, { locale } as any)
-      : children
-
   return (
     <LocaleContext.Provider value={locale}>
       <div className="min-h-screen flex flex-col">
@@ -52,7 +45,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           onLocaleChange={handleLocaleChange} 
         />
         <main className="flex-1">
-          {childrenWithLocale}
+          {children}
         </main>
         <Footer 
           locale={locale}
