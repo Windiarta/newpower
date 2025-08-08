@@ -484,68 +484,6 @@ export default function HomePage() {
       <div id="contact" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Contact Form */}
-            <div className="bg-white rounded-lg shadow-sm border p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                {t.contact.sendMessage}
-              </h2>
-              <form className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.name}
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.email}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.phone}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.contact.message}
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
-                >
-                  <Mail className="h-5 w-5 mr-2" />
-                  {t.contact.send}
-                </button>
-              </form>
-            </div>
             {/* Contact Persons */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -624,13 +562,6 @@ export default function HomePage() {
             <p className="text-xl text-blue-100 mb-8">
               {t.home.readyToStartDesc}
             </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <Phone className="mr-2 h-5 w-5" />
-              {t.home.contactUs}
-            </a>
           </div>
         </div>
       </div>
