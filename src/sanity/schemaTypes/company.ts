@@ -43,26 +43,6 @@ const company = defineType({
       type: 'text',
     }),
     defineField({
-      name: 'vision',
-      title: 'Vision (ID)',
-      type: 'text',
-    }),
-    defineField({
-      name: 'visionEn',
-      title: 'Vision (EN)',
-      type: 'text',
-    }),
-    defineField({
-      name: 'mission',
-      title: 'Mission (ID)',
-      type: 'text',
-    }),
-    defineField({
-      name: 'missionEn',
-      title: 'Mission (EN)',
-      type: 'text',
-    }),
-    defineField({
       name: 'address',
       title: 'Address (ID)',
       type: 'text',
