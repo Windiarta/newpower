@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { urlFor } from '@/lib/sanity'
 import { Product } from '@/types'
 
@@ -10,20 +12,92 @@ interface ProductCardProps {
 export default function ProductCard({ product, locale }: ProductCardProps) {
   const name = locale === 'id' ? product.name : product.nameEn
   const description = locale === 'id' ? product.description : product.descriptionEn
-  const category = locale === 'id' ? product.category : product.categoryEn
+  const category = locale === 'id' ? product.category?.title : product.category?.titleEn
   const features = locale === 'id' ? product.features : product.featuresEn
+  const images = Array.isArray(product.image) ? product.image : (product.image ? [product.image] : [])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const hasMultipleImages = images.length > 1
+
+  const showPrev = () => {
+    if (images.length === 0) return
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)
+  }
+
+  const showNext = () => {
+    if (images.length === 0) return
+    setCurrentIndex((prev) => (prev + 1) % images.length)
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-48 w-full">
-        {product.image && (
-          <Image
-            src={urlFor(product.image).url()}
-            alt={name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+        {images.length > 0 && (
+          <button
+            type="button"
+            className="w-full h-full"
+            style={{ cursor: 'zoom-in' }}
+            onClick={() => {
+              // Open modal to show large image
+              const imgUrl = urlFor(images[currentIndex]).url()
+              const modal = document.createElement('dialog')
+              modal.style.padding = '0'
+              modal.style.background = 'transparent'
+              modal.style.display = 'flex'
+              modal.style.justifyContent = 'center'
+              modal.style.alignItems = 'center'
+              modal.style.position = 'fixed'
+              modal.style.top = '0'
+              modal.style.left = '0'
+              modal.style.width = '100vw'
+              modal.style.height = '100vh'
+              modal.style.border = 'none'
+              modal.style.maxWidth = '100vw'
+              modal.style.maxHeight = '100vh'
+              modal.style.overflow = 'auto'
+              modal.onclick = () => { modal.close(); modal.remove() }
+              const img = document.createElement('img')
+              img.src = imgUrl
+              img.alt = name
+              img.style.objectFit = 'contain'
+              img.style.maxWidth = '100%'
+              img.style.maxHeight = '100%'
+              img.style.display = 'block'
+              img.style.margin = 'auto'
+              img.onclick = (e) => e.stopPropagation()
+              modal.appendChild(img)
+              document.body.appendChild(modal)
+              modal.showModal()
+            }}
+          >
+            <Image
+              src={urlFor(images[currentIndex]).url()}
+              alt={name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              draggable={false}
+            />
+          </button>
+        )}
+        {hasMultipleImages && (
+          <>
+            <button
+              type="button"
+              onClick={showPrev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 w-8 h-8 rounded-full grid place-items-center shadow"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={showNext}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 w-8 h-8 rounded-full grid place-items-center shadow"
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </>
         )}
       </div>
       
@@ -34,11 +108,11 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
           </span>
         </div>
         
-        <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+				<h3 className="text-xl font-semibold text-gray-900 mb-2 ">
           {name}
         </h3>
         
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+				<p className="text-gray-600 text-sm mb-4 ">
           {description}
         </p>
         

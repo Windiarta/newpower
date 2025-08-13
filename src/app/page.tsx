@@ -28,7 +28,23 @@ export default function HomePage() {
     const fetchData = async () => {
       try {
         const [productsResult, companyResult, contactsResult] = await Promise.all([
-          client.fetch(`*[_type == "product"] | order(createdAt desc)`),
+          client.fetch(`*[_type == "product"] {
+            _id,
+            name,
+            nameEn,
+            description,
+            descriptionEn,
+            category->{
+              _id,
+              title,
+              titleEn
+            },
+            price,
+            image,
+            features,
+            featuresEn,
+            createdAt
+          } | order(createdAt desc)`),
           client.fetch(`*[_type == "company"][0]`),
           client.fetch(`*[_type == "contact"] | order(name asc)`)
         ])
@@ -52,8 +68,8 @@ export default function HomePage() {
   }, [products, locale])
 
   const categories = [...new Set(products.map(product => 
-    locale === 'id' ? product.category : product.categoryEn
-  ))]
+    locale === 'id' ? product.category?.title : product.category?.titleEn
+  ).filter(Boolean))]
 
   const handleSearch = (query: string) => {
     setSearchQuery(query)
@@ -81,7 +97,7 @@ export default function HomePage() {
     }
     if (category) {
       filtered = filtered.filter(product => {
-        const productCategory = locale === 'id' ? product.category : product.categoryEn
+        const productCategory = locale === 'id' ? product.category?.title : product.category?.titleEn
         return productCategory === category
       })
     }
@@ -196,7 +212,7 @@ export default function HomePage() {
       </div>
 
       {/* Features Section */}
-      <div className="py-16">
+      {/* <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -225,7 +241,7 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Products Section */}
       <div id="products" className="py-8">
@@ -269,7 +285,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 {/* Sort Options */}
-                <div>
+                {/* <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     {t.products.sortBy}
                   </h4>
@@ -294,7 +310,7 @@ export default function HomePage() {
                       </button>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             {/* Main Content Area */}
@@ -443,29 +459,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              {/* Vision & Mission */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                {/* Vision */}
-                <div className="bg-white rounded-lg shadow-sm border p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                    <Target className="h-6 w-6 mr-2 text-green-600" />
-                    {t.company.vision}
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed">
-                    {locale === 'id' ? company.vision : company.visionEn}
-                  </p>
-                </div>
-                {/* Mission */}
-                <div className="bg-white rounded-lg shadow-sm border p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                    <Award className="h-6 w-6 mr-2 text-purple-600" />
-                    {t.company.mission}
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed">
-                    {locale === 'id' ? company.mission : company.missionEn}
-                  </p>
-                </div>
-              </div>
+              
             </>
           ) : (
             <div className="text-center py-12">

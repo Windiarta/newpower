@@ -4,10 +4,10 @@ import './globals.css'
 import ClientLayout from '@/components/ClientLayout'
 
 const inter = Inter({ subsets: ['latin'] })
-
+  
 export const metadata: Metadata = {
-  title: 'Company Catalog',
-  description: 'Katalog produk perusahaan dengan Next.js dan Sanity',
+  title: 'PT Cobostar Industrial Indonesia',
+  description: 'Katalog produk perusahaan PT Cobostar Industrial Indonesia',
 }
 
 export default function RootLayout({

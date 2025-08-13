@@ -31,14 +31,9 @@ const product = defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Category (ID)',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'categoryEn',
-      title: 'Category (EN)',
-      type: 'string',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -49,10 +44,8 @@ const product = defineType({
     defineField({
       name: 'image',
       title: 'Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
+      type: 'array',
+      of: [{ type: 'image' }],
     }),
     defineField({
       name: 'features',

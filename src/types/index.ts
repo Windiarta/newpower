@@ -8,9 +8,12 @@ export interface Product {
     asset: {
       _ref: string
     }
+  }[]
+  category: {
+    _id: string
+    title: string
+    titleEn: string
   }
-  category: string
-  categoryEn: string
   price?: number
   features?: string[]
   featuresEn?: string[]
@@ -31,10 +34,6 @@ export interface Company {
   }
   about: string
   aboutEn: string
-  vision: string
-  visionEn: string
-  mission: string
-  missionEn: string
   address: string
   addressEn: string
   phone: string
