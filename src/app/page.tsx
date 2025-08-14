@@ -401,15 +401,28 @@ export default function HomePage() {
                       <Building className="h-6 w-6 mr-2 text-blue-600" />
                       {t.company.about}
                     </h2>
-                    <p className="text-gray-600 leading-relaxed">
+                    <div className="text-gray-600 leading-relaxed">
                       {(() => {
                         const aboutText = locale === 'id' ? company.about : company.aboutEn
                         const truncatedAbout = aboutText && aboutText.length > 300 
-                          ? aboutText.substring(0, 300) + '...' 
+                          ? aboutText.substring(0, 600) + '...' 
                           : aboutText
+                        
+                        // Function to render text with line breaks
+                        const renderTextWithLineBreaks = (text: string) => {
+                          if (!text) return null
+                          
+                          return text.split('\n').map((line, index) => (
+                            <span key={index}>
+                              {line}
+                              {index < text.split('\n').length - 1 && <br />}
+                            </span>
+                          ))
+                        }
+                        
                         return (
                           <>
-                            {truncatedAbout}
+                            {truncatedAbout ? renderTextWithLineBreaks(truncatedAbout) : null}
                             {aboutText && aboutText.length > 300 && (
                               <button
                                 onClick={() => setIsCompanyModalOpen(true)}
@@ -421,7 +434,7 @@ export default function HomePage() {
                           </>
                         )
                       })()}
-                    </p>
+                    </div>
                   </div>
                   {/* Contact Info */}
                   <div>

@@ -11,27 +11,31 @@ interface DescriptionModalProps {
 }
 
 export default function DescriptionModal({ isOpen, onClose, title, description, locale }: DescriptionModalProps) {
-  // Debug logging
-  console.log('DescriptionModal render:', { isOpen, title, description: description?.substring(0, 50) + '...' })
-
   // Handle body scroll
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
-      console.log('Modal opened, body scroll hidden')
       return () => {
         document.body.style.overflow = 'unset'
-        console.log('Modal closed, body scroll restored')
       }
     }
   }, [isOpen])
 
   if (!isOpen) {
-    console.log('Modal not open, returning null')
     return null
   }
 
-  console.log('Rendering modal with content')
+  // Function to render text with line breaks
+  const renderTextWithLineBreaks = (text: string) => {
+    if (!text) return null
+    
+    return text.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < text.split('\n').length - 1 && <br />}
+      </span>
+    ))
+  }
 
   const modalContent = (
     <div 
@@ -101,9 +105,9 @@ export default function DescriptionModal({ isOpen, onClose, title, description, 
           <div style={{
             color: '#374151',
             lineHeight: '1.6',
-            whiteSpace: 'pre-wrap'
+            whiteSpace: 'pre-line'
           }}>
-            {description}
+            {renderTextWithLineBreaks(description)}
           </div>
         </div>
         

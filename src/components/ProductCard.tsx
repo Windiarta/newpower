@@ -20,6 +20,18 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const hasMultipleImages = images.length > 1
 
+  // Function to render text with line breaks
+  const renderTextWithLineBreaks = (text: string) => {
+    if (!text) return null
+    
+    return text.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < text.split('\n').length - 1 && <br />}
+      </span>
+    ))
+  }
+
   // Truncate description for display
   const truncatedDescription = description && description.length > 150 
     ? description.substring(0, 150) + '...' 
@@ -119,20 +131,17 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
           {name}
         </h3>
         
-				<p className="text-gray-600 text-sm mb-4 ">
-          {truncatedDescription}
+				<div className="text-gray-600 text-sm mb-4 leading-relaxed">
+          {truncatedDescription ? renderTextWithLineBreaks(truncatedDescription) : null}
           {description && description.length > 150 && (
             <button
-              onClick={() => {
-                console.log('Read more clicked for:', name)
-                setIsModalOpen(true)
-              }}
+              onClick={() => setIsModalOpen(true)}
               className="text-blue-600 hover:text-blue-800 font-medium ml-1"
             >
               {locale === 'id' ? 'Baca selengkapnya' : 'Read more'}
             </button>
           )}
-        </p>
+        </div>
         
         {product.price && (
           <div className="flex items-center justify-between">
