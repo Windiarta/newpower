@@ -7,6 +7,7 @@ import { Product, Company, Contact } from '@/types'
 import { getTranslation } from '@/lib/i18n'
 import { useLocale } from '@/lib/LocaleContext'
 import ProductCard from '@/components/ProductCard'
+import DescriptionModal from '@/components/DescriptionModal'
 import { ArrowRight, Package, Building, Users, Phone, Mail, MapPin, Globe, Target, Award } from 'lucide-react'
 
 const PRODUCTS_PER_PAGE = 9;
@@ -22,6 +23,7 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortBy, setSortBy] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false)
   const t = getTranslation(locale)
 
   useEffect(() => {
@@ -400,7 +402,25 @@ export default function HomePage() {
                       {t.company.about}
                     </h2>
                     <p className="text-gray-600 leading-relaxed">
-                      {locale === 'id' ? company.about : company.aboutEn}
+                      {(() => {
+                        const aboutText = locale === 'id' ? company.about : company.aboutEn
+                        const truncatedAbout = aboutText && aboutText.length > 300 
+                          ? aboutText.substring(0, 300) + '...' 
+                          : aboutText
+                        return (
+                          <>
+                            {truncatedAbout}
+                            {aboutText && aboutText.length > 300 && (
+                              <button
+                                onClick={() => setIsCompanyModalOpen(true)}
+                                className="text-blue-600 hover:text-blue-800 font-medium ml-1"
+                              >
+                                {locale === 'id' ? 'Baca selengkapnya' : 'Read more'}
+                              </button>
+                            )}
+                          </>
+                        )
+                      })()}
                     </p>
                   </div>
                   {/* Contact Info */}
@@ -559,6 +579,17 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      
+      {/* Company Description Modal */}
+      {company && (
+        <DescriptionModal
+          isOpen={isCompanyModalOpen}
+          onClose={() => setIsCompanyModalOpen(false)}
+          title={t.company.about}
+          description={locale === 'id' ? company.about : company.aboutEn || ''}
+          locale={locale}
+        />
+      )}
     </div>
   )
 }
