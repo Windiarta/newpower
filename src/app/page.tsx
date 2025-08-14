@@ -7,6 +7,7 @@ import { Product, Company, Contact } from '@/types'
 import { getTranslation } from '@/lib/i18n'
 import { useLocale } from '@/lib/LocaleContext'
 import ProductCard from '@/components/ProductCard'
+import DescriptionModal from '@/components/DescriptionModal'
 import { ArrowRight, Package, Building, Users, Phone, Mail, MapPin, Globe, Target, Award } from 'lucide-react'
 
 const PRODUCTS_PER_PAGE = 9;
@@ -22,6 +23,7 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortBy, setSortBy] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false)
   const t = getTranslation(locale)
 
   useEffect(() => {
@@ -323,7 +325,7 @@ export default function HomePage() {
                     placeholder={t.products.search}
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
                   />
                   <Package className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 </div>
@@ -399,9 +401,40 @@ export default function HomePage() {
                       <Building className="h-6 w-6 mr-2 text-blue-600" />
                       {t.company.about}
                     </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                      {locale === 'id' ? company.about : company.aboutEn}
-                    </p>
+                    <div className="text-gray-600 leading-relaxed">
+                      {(() => {
+                        const aboutText = locale === 'id' ? company.about : company.aboutEn
+                        const truncatedAbout = aboutText && aboutText.length > 300 
+                          ? aboutText.substring(0, 600) + '...' 
+                          : aboutText
+                        
+                        // Function to render text with line breaks
+                        const renderTextWithLineBreaks = (text: string) => {
+                          if (!text) return null
+                          
+                          return text.split('\n').map((line, index) => (
+                            <span key={index}>
+                              {line}
+                              {index < text.split('\n').length - 1 && <br />}
+                            </span>
+                          ))
+                        }
+                        
+                        return (
+                          <>
+                            {truncatedAbout ? renderTextWithLineBreaks(truncatedAbout) : null}
+                            {aboutText && aboutText.length > 300 && (
+                              <button
+                                onClick={() => setIsCompanyModalOpen(true)}
+                                className="text-blue-600 hover:text-blue-800 font-medium ml-1"
+                              >
+                                {locale === 'id' ? 'Baca selengkapnya' : 'Read more'}
+                              </button>
+                            )}
+                          </>
+                        )
+                      })()}
+                    </div>
                   </div>
                   {/* Contact Info */}
                   <div>
@@ -559,6 +592,17 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      
+      {/* Company Description Modal */}
+      {company && (
+        <DescriptionModal
+          isOpen={isCompanyModalOpen}
+          onClose={() => setIsCompanyModalOpen(false)}
+          title={t.company.about}
+          description={locale === 'id' ? company.about : company.aboutEn || ''}
+          locale={locale}
+        />
+      )}
     </div>
   )
 }

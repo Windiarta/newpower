@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { urlFor } from '@/lib/sanity'
 import { Product } from '@/types'
+import DescriptionModal from './DescriptionModal'
 
 interface ProductCardProps {
   product: Product
@@ -16,7 +17,25 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
   const features = locale === 'id' ? product.features : product.featuresEn
   const images = Array.isArray(product.image) ? product.image : (product.image ? [product.image] : [])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const hasMultipleImages = images.length > 1
+
+  // Function to render text with line breaks
+  const renderTextWithLineBreaks = (text: string) => {
+    if (!text) return null
+    
+    return text.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < text.split('\n').length - 1 && <br />}
+      </span>
+    ))
+  }
+
+  // Truncate description for display
+  const truncatedDescription = description && description.length > 150 
+    ? description.substring(0, 150) + '...' 
+    : description
 
   const showPrev = () => {
     if (images.length === 0) return
@@ -112,9 +131,17 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
           {name}
         </h3>
         
-				<p className="text-gray-600 text-sm mb-4 ">
-          {description}
-        </p>
+				<div className="text-gray-600 text-sm mb-4 leading-relaxed">
+          {truncatedDescription ? renderTextWithLineBreaks(truncatedDescription) : null}
+          {description && description.length > 150 && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="text-blue-600 hover:text-blue-800 font-medium ml-1"
+            >
+              {locale === 'id' ? 'Baca selengkapnya' : 'Read more'}
+            </button>
+          )}
+        </div>
         
         {product.price && (
           <div className="flex items-center justify-between">
@@ -138,6 +165,14 @@ export default function ProductCard({ product, locale }: ProductCardProps) {
           </div>
         )}
       </div>
+      
+      <DescriptionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={name}
+        description={description || ''}
+        locale={locale}
+      />
     </div>
   )
 } 
