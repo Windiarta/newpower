@@ -46,14 +46,6 @@ const contact = defineType({
       title: 'WhatsApp',
       type: 'string',
     }),
-    defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
   ],
   preview: {
     select: {

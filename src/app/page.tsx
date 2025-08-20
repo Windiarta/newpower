@@ -214,7 +214,7 @@ export default function HomePage() {
       </div>
 
       {/* Features Section */}
-      {/* <div className="py-16">
+      <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -243,7 +243,7 @@ export default function HomePage() {
             })}
           </div>
         </div>
-      </div> */}
+      </div>
 
       {/* Products Section */}
       <div id="products" className="py-8">
@@ -287,7 +287,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 {/* Sort Options */}
-                {/* <div>
+                <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     {t.products.sortBy}
                   </h4>
@@ -312,7 +312,7 @@ export default function HomePage() {
                       </button>
                     ))}
                   </div>
-                </div> */}
+                </div>
               </div>
             </div>
             {/* Main Content Area */}
