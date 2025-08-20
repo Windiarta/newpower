@@ -7,7 +7,7 @@
     "admin": "Admin"
   },
   "home": {
-    "title": "PT Cobostar Industrial Indonesia",
+    "title": "HBC Mitra Autopart",
     "subtitle": "Discover high-quality products from our company",
     "viewProducts": "View Products",
     "learnMore": "Learn More",
@@ -101,7 +101,6 @@
     "preview": "Preview"
   },
   "footer": {
-    "copyright": "© 2024 Company Catalog. All rights reserved.",
-    "poweredBy": "Built with Next.js and Sanity"
+    "copyright": "© 2025 HBC Mitra Autopart. All rights reserved."
   }
 } 

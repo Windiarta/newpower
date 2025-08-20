@@ -20,10 +20,10 @@ export default function Footer({ locale, company, contacts }: FooterProps) {
           {/* Company Info */}
           <div>
             <h3 className="text-lg font-semibold mb-4">
-              {company ? (locale === 'id' ? company.name : company.nameEn) : 'Company Catalog'}
+              {company ? (locale === 'id' ? company.name : company.nameEn) : ''}
             </h3>
             <p className="text-gray-300 mb-4">
-              {company ? (locale === 'id' ? company.description : company.descriptionEn) : t.footer.poweredBy}
+              {company ? (locale === 'id' ? company.description : company.descriptionEn) : ''}
             </p>
             {company && (
               <div className="space-y-2 text-sm text-gray-300">
@@ -93,7 +93,6 @@ export default function Footer({ locale, company, contacts }: FooterProps) {
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
           <p>{t.footer.copyright}</p>
-          <p className="mt-1">{t.footer.poweredBy}</p>
         </div>
       </div>
     </footer>

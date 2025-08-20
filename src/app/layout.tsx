@@ -6,8 +6,8 @@ import ClientLayout from '@/components/ClientLayout'
 const inter = Inter({ subsets: ['latin'] })
   
 export const metadata: Metadata = {
-  title: 'PT Cobostar Industrial Indonesia',
-  description: 'Katalog produk perusahaan PT Cobostar Industrial Indonesia',
+  title: 'HBC Mitra Autopart',
+  description: 'HBC Mitra Autopart',
 }
 
 export default function RootLayout({
